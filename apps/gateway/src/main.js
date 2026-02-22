@@ -67,7 +67,7 @@ app.use('/auth', (req, res) =>
     .catch(() => res.status(500).json({ error: 'auth error' }))
 );
 
-app.use('/products', (req, res) =>
+app.use('/products', auth, (req, res) =>
   axios({ method: req.method, url: 'http://product:3002' + req.url, data: req.body })
     .then(r => res.json(r.data))
     .catch(() => res.status(500).json({ error: 'product error' }))

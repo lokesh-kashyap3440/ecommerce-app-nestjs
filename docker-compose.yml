@@ -26,6 +26,7 @@ services:
     environment:
       DATABASE_URL: postgres://admin:admin@postgres:5432/commerce
       REDIS_HOST: redis
+      JWT_SECRET: supersecret
     depends_on: [postgres, redis]
 
   order:
