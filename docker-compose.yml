@@ -1,0 +1,40 @@
+
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: commerce
+    ports: ["5432:5432"]
+
+  redis:
+    image: redis:7
+    ports: ["6379:6379"]
+
+  auth:
+    build: ./apps/auth
+    environment:
+      DATABASE_URL: postgres://admin:admin@postgres:5432/commerce
+      JWT_SECRET: supersecret
+    depends_on: [postgres]
+
+  product:
+    build: ./apps/product
+    environment:
+      DATABASE_URL: postgres://admin:admin@postgres:5432/commerce
+      REDIS_HOST: redis
+    depends_on: [postgres, redis]
+
+  order:
+    build: ./apps/order
+    environment:
+      DATABASE_URL: postgres://admin:admin@postgres:5432/commerce
+    depends_on: [postgres]
+
+  gateway:
+    build: ./apps/gateway
+    ports: ["3000:3000"]
+    depends_on: [auth, product, order]

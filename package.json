@@ -1,0 +1,9 @@
+
+{
+  "name": "commerce-monorepo",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "dev": "docker-compose up --build"
+  }
+}
